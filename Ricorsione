@@ -1,0 +1,62 @@
+input : Set di esamiPARTENZA
+input :numero di crediti "m"
+
+output: set di esami, sottoinsieme di quello di partenza per cui:
+	- somma Esami.crediti == m
+	- Media Esame.vot MAX
+
+Strategia: genero tutti i possibili sottoinsiemi dell'insieme di partenza
+non importa l'ordine
+
+#approccio 1:
+genero l'insieme scegliendo corso per coso se fa parte dell'insime o no
+Livello della ricorsione corrisponde a quale corso sto decidendo se includere o no
+nell'insieme soluz
+
+Soluz parz -> un sottoinsime composto tra i corsi 0 e L-1
+
+es: L=4
+	sol par ={0,3}
+	opp sol par={0,1,2,3}
+	opp { }
+	Al max 4 elenti tra 0 e 3 della lista esami
+Generazione del sottoprob e' decidere se inserire l'esame L
+	1 Sottoproblema= Sol parz(non aggiungo)
+	2  Sottoproblema= Sol parz + {L} aggiungo
+In entrambi i casi faccio ricorsione
+
+Casi terminali:
+	-L= max -> non ci sono piu' corsi
+		se somma crediti == m -> devo calcolare media
+	-somma crediti == m
+		- valuta media e non genera sottoproblemi
+	-somma crediti >m
+		- esce non posso fare piu' niente
+		
+
+Cosa faccio nel caso terminale?
+	-Se somma crediti !=m => return;
+	-se ssomma crediti == m => valuto media,
+		-la media e' migliore della miglior media conosciuta?
+			-se si' => sol corrente diventa best(aggiorno best)
+			-se no => return
+
+Complessita' 2^N, N in questo problema non crescera' mai
+piu' di 25 o 30
+			
+#Approccio 2: ad ogni livello aggiungo un corso;
+Al livello L sol parzi ha L corsi
+
+Sottoproblema: aggiungo un nuovo corso all'insieme esistente
+	per tutti i corsi possibili (non ancora nell'insieme)
+		-sotto prob = parziale + corso(i)
+
+Casi terminali non cambiano!
+
+Compleessita': N!
+Mi genera tutte le possibilita'
+
+Posso evitare tutte le combinazioni => vincolo la soluzione parziale ad essere
+crescente anche non consecutive
+Complessita 2^N
+		
